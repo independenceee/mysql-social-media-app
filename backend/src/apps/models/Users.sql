@@ -1,4 +1,4 @@
-CREATE TABLE 'user' (
+CREATE TABLE 'users' (
     'id' INT NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,
     'username' VARCHAR(45) NOT NULL,
     'email' VARCHAR(45) NOT NULL,
@@ -9,3 +9,4 @@ CREATE TABLE 'user' (
     'website' VARCHAR(100) NULL,
     "city" VARCHAR(100) NULL,
 );
+

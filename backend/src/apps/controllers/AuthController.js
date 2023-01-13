@@ -1,5 +1,7 @@
 const { databaseMysql } = require("../../configs/databases");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 class AuthController {
     async register(request, response) {
         try {
@@ -18,12 +20,17 @@ class AuthController {
                 const salt = bcrypt.genSaltSync(10);
                 const hashedPassword = bcrypt.hashSync(password, salt);
 
-                const query =
-                    "INSERT INTO users (`username`,`email`, `password`,`name`) VALUE (?)";
+                const queryInsert =
+                    "INSERT INTO users(`username`,`email`, `password`,`name`) VALUE (?, ?, ?, ?)";
                 databaseMysql.query(
-                    query,
+                    queryInsert,
                     [username, email, hashedPassword, name],
                     function (error, data) {
+                        if (error) {
+                            return response.status(200).json({
+                                message: error,
+                            });
+                        }
                         return response.status(200).json({
                             message: "User has been created.",
                         });
@@ -41,7 +48,7 @@ class AuthController {
 
     async login(request, response) {
         try {
-            const { email, password } = request.body;
+            const { email } = request.body;
 
             const query = "SELECT * FROM users WHERE email = ?";
             databaseMysql.query(query, [email], function (error, data) {
@@ -51,13 +58,13 @@ class AuthController {
                     });
                 }
                 if (data.length == 0) {
-                    response.status.json({
+                    response.status(404).json({
                         message: "User not found",
                     });
                 }
 
                 const checkPassword = bcrypt.compareSync(
-                    password,
+                    request.body.password,
                     data[0].password
                 );
 
