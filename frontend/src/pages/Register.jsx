@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Register = function () {
@@ -12,6 +12,7 @@ const Register = function () {
     });
 
     const [errors, setErrors] = useState(null);
+    const navigate = useNavigate();
 
     const handleChange = function (event) {
         event.preventDefault();
@@ -26,7 +27,11 @@ const Register = function () {
     const handleClick = async function (event) {
         event.preventDefault();
         try {
-            await axios.post("http://localhost:5000/api/auth/register", inputs);
+            await axios.post(
+                "http://localhost:5000/api/v1/auth/register",
+                inputs,
+            );
+            navigate("/");
         } catch (error) {
             setErrors(error.response.data);
         }

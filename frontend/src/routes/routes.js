@@ -1,20 +1,19 @@
+import React from "react";
 import config from "../configs";
 import Home from "../pages/Home";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
-import Profile from "../pages/Profile";
 import ErrorPage from "../pages/Error";
 const publicRoutes = [
     {
         path: config.routes.register,
         components: <Register />,
-        errorPages: <ErrorPage/>
+        errorPages: <ErrorPage />,
     },
     {
         path: config.routes.login,
         components: <Login />,
-        errorPages: <ErrorPage/>
-
+        errorPages: <ErrorPage />,
     },
 ];
 
@@ -22,8 +21,7 @@ const privateRoutes = [
     {
         path: config.routes.home,
         components: <Home />,
-        errorPages: <ErrorPage/>
-
+        errorPages: <ErrorPage />,
     },
 ];
 
