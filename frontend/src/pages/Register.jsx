@@ -1,9 +1,36 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 const Register = function () {
+    const [inputs, setInputs] = useState({
+        username: "",
+        email: "",
+        password: "",
+        name: "",
+    });
+
+    const [errors, setErrors] = useState(null);
+
+    const handleChange = function (event) {
+        event.preventDefault();
+        setInputs(function (previous) {
+            return {
+                ...previous,
+                [event.target.name]: event.target.value,
+            };
+        });
+    };
+
+    const handleClick = async function (event) {
+        event.preventDefault();
+        try {
+            await axios.post("http://localhost:5000/api/auth/register", inputs);
+        } catch (error) {
+            setErrors(error.response.data);
+        }
+    };
     return (
         <Container>
             <Wrapper>
@@ -42,10 +69,12 @@ const Register = function () {
                         />
                         <input
                             type="text"
-                            placeholder="name..."
+                            placeholder="Name..."
                             name="name"
                             onChange={handleChange}
                         />
+                        {errors && <p>{errors}</p>}
+                        <button onClick={handleClick}>Register</button>
                     </form>
                 </Right>
             </Wrapper>
