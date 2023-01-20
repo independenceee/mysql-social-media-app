@@ -50,7 +50,7 @@ class AuthController {
         try {
             const { email } = request.body;
 
-            const query = "SELECT * FROM users WHERE email = ?";
+            const query = "SELECT * FROM users WHERE username = ?";
             databaseMysql.query(query, [email], function (error, data) {
                 if (error) {
                     return response.status(404).json({
